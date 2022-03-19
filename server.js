@@ -1,6 +1,6 @@
 const express = require('express');
 const db = require('./db/connection');
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3009;
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
@@ -42,5 +42,5 @@ app.listen(PORT, () => {
 
 // Out put in order:
 // Connected to the election database.
-// Server running on port 3001
-// Example app listening at http://localhost:3001/ 
+// Server running on port 3009
+// Example app listening at http://localhost:3009/ 
