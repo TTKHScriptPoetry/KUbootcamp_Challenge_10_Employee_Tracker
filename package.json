@@ -1,0 +1,28 @@
+{
+  "name": "kubootcamp_challenge_10_employee_tracker",
+  "version": "1.0.0",
+  "description": "command-line application to manage a company's employee database",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "to be determined"
+  },
+  "keywords": [
+    "CMS",
+    "node.js",
+    "mysql",
+    "database",
+    "inquirer",
+    "relational",
+    "database"
+  ],
+  "author": "Kimberly Tran",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mysql2": "^2.3.3"
+  }
+}
