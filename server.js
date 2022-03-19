@@ -12,15 +12,15 @@ app.use(express.json()); // pivot point
 db.query(`SELECT * FROM department`, (err, rows) => {  
    console.log(rows);
 }); 
-// // 
-// // // GET a single department -- If there are no errors, the err response returns as null
-// // db.query(`SELECT * FROM department WHERE id = ?`, 1, (err, row) => {
-// //    if (err) {
-// //      console.log(err);
-// //    }
-// //    console.log(row);
-// //  });
-// // 
+
+// GET a single department -- If there are no errors, the err response returns as null
+db.query(`SELECT * FROM department WHERE id = ?`, 1, (err, row) => {
+   if (err) {
+     console.log(err);
+   }
+   console.log(row);
+ });
+
 
 app.use((req, res) => {
    res.status(404).end();
