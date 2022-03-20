@@ -5,8 +5,7 @@ const PORT = process.env.PORT || 3009;
 const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json()); // pivot point
-// app.use('/api', apiRoutes);
-
+ 
  
 // //  // -- Query Actions - Testing purpose only
 db.query(`SELECT * FROM department`, (err, rows) => {  
@@ -14,13 +13,12 @@ db.query(`SELECT * FROM department`, (err, rows) => {
 }); 
 
 // GET a single department -- If there are no errors, the err response returns as null
-db.query(`SELECT * FROM department WHERE id = ?`, 1, (err, row) => {
+db.query(`SELECT * FROM department WHERE id = ?`, 11, (err, row) => {
    if (err) {
      console.log(err);
    }
    console.log(row);
  });
-
 
 app.use((req, res) => {
    res.status(404).end();
@@ -44,3 +42,5 @@ app.listen(PORT, () => {
 // Connected to the election database.
 // Server running on port 3009
 // Example app listening at http://localhost:3009/ 
+
+module.exports = server;
