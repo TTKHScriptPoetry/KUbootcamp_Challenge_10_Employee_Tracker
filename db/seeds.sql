@@ -28,5 +28,7 @@ VALUES
   ('Kunal', 'Singh', 5, NULL, 2221),
   ('Malia', 'Brown', 6, 5, 2220),
   ('Sarah', 'Lourd', 7, NULL, 3331),
-  ('Tom', 'Allen', 8, 7, 3330);
+  ('Tom', 'Allen', 8, 7, 3330),
+  ('San', 'Kasick', 9, NULL, 4441),
+  ('Swanson', 'Maria', 10, NULL, 4440);
   

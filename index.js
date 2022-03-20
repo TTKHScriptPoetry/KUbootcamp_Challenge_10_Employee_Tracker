@@ -7,7 +7,7 @@ const ADD_DEPT = "ADD A DEPARTMENT";
 const ADD_ROLE = "ADD A ROLE";
 const ADD_EMP = "ADD AN EMPLOYEE";
 const EDIT_EMP_ROLE = "UPDATE AN EMPLOYEE ROLE";
-const { getAllDepartment, getAllRoles } = require('./utils/inquiry.js'); 
+const { getAllDepartment, getAllRoles, getAllEmployees } = require('./utils/inquiry.js'); 
 
 var options = [];
 options.push(VW_DEPT_ALL);
@@ -18,8 +18,11 @@ options.push(ADD_ROLE);
 options.push(ADD_EMP);
 options.push(EDIT_EMP_ROLE);
 var mainAction = '';
+let deptHall = [];
+let roleBlock = [];
+let employeeHall = [];
 
-const prompEngrTeamMember = () => { 
+const promptAddDepartment = () => { 
    // // if (!profileData.teammembers) {
    // //    profileData.teammembers = [];
    // // }
@@ -27,36 +30,35 @@ const prompEngrTeamMember = () => {
      .prompt([
          {
             type: 'confirm',
-            name: 'confirmAddMember', 
-            message: 'Would you like to go back to the Main Menu?',
+            name: 'confirmAddDept', 
+            message: 'Would you like to add another department?',
             default: false
          }
       ])
-     .then(engrMemberData => {
-         // // profileData.teammembers.push(engrMemberData);
-         // var engineer = new Engineer(engrMemberData.name, engrMemberData.id, engrMemberData.email, engrMemberData.github);
-         // engineerTeam.push(engineer);
-         if (engrMemberData.confirmAddMember) {
-            // return prompEngrTeamMember(profileData);
-            promtMainMenu();
+     .then(deptData => {
+         // profileData.teammembers.push(deptData);
+         var dept = new Department(deptData.name, deptData.id);
+         deptHall.push(dept);
+         if (deptData.confirmAddDept) {
+            return promptAddDepartment(profileData);
          }
          else {
             console.log("The End");
-            // inquirer
-            // .prompt({
-            //    type: 'confirm',
-            //    name: 'confirmWantIntern', 
-            //    message: 'Would you like to add an Intern Team Member? [No to End]',
-            //    default: false
-            // })
-            // .then(ansCont => {
-            //    if(ansCont.confirmWantIntern){
-            //       return prompInternTeamMember(profileData);
-            //    }
-            //    else{
-            //       peekResult();
-            //    }
-            // })
+            inquirer
+            .prompt({
+               type: 'confirm',
+               name: 'confirmWantMenu', 
+               message: 'Would you like to go to the Main Menu? [No to End]',
+               default: false
+            })
+            .then(ansCont => {
+               if(ansCont.confirmWantMenu){
+                  return promtMainMenu(appName = false);
+               }
+               else{
+                  peekResult();
+               }
+            })
          }
       });
 }
@@ -99,6 +101,9 @@ const promtMainMenu = (appName) => {
          case VW_ROLE_ALL:
             getAllRoles();
             break;
+         case VW_EMP_ALL:
+            getAllEmployees();
+            break;            
          default:
             promtMainMenu();   
       }
