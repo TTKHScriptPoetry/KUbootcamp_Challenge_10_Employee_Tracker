@@ -2,12 +2,14 @@ const dbConn = require('../db/connection');
 const cTable = require('console.table');
 
 function getAllEmployees() {
-  const sqlSelect = `SELECT e.id as 'Employee ID', e.first_name as 'First Name' , e.last_name as 'Last Name',  
-                      rl.title as 'Job Title', rl.salary as Salary, e.manager_id as Manager
-                      FROM role rl  
-                      LEFT JOIN department d ON rl.department_id = d.id
-                      LEFT JOIN employee e   ON rl.id = e.role_id
-                      ORDER BY e.id ASC`
+  const sqlSelect = `SELECT e.id as 'Employee ID', e.first_name as 'First Name', e.last_name as 'Last Name', 
+                      rl.title as 'Job Title', d.name AS Department, rl.salary as Salary,
+                      CONCAT(mgr.first_name, ' ', mgr.last_name) AS Manager
+                      FROM employee e 
+                        LEFT JOIN employee mgr ON mgr.id = e.manager_id    
+                        JOIN role rl ON e.role_id = rl.id
+                        JOIN department d ON rl.department_id = d.id
+                      ORDER BY e.id;`
   // -- Query Actions  
   dbConn.promise().query(sqlSelect)
     .then ( ([rows]) => {
@@ -61,3 +63,4 @@ function getAllRoles() {
 // // }
 
 module.exports = { getAllDepartment, getAllRoles, getAllEmployees };
+
