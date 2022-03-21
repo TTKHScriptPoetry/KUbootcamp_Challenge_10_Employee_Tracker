@@ -7,5 +7,5 @@
  
 ##### Project Description:
 -----------------------------------------------------------------------------------------------------------
-#####  NODE JS Command line based application to save and extract data per SQL querries. We are expect to use MySQL2 to establislhed connection to Mysql,  and ran numerous of querries built from scratch utilizing from simple CRUD operation to a litle more advanced scripts to extract what need to be displayed regarding employee and department of a company.
+#####  This is another NODE JS Command Line based application that is buit to save and extract data per SQL queries. We are expect to use MySQL2 to establislhed connection to Mysql, and ran numerous of queries built from scratch utilizing from simple CRUD operations to a litle more advanced scripts to extract what need to be displayed regarding employees and departments of a company. This is our little effor to build a non-web Content Management System that fully utilizes Inquirer package.
 -----------------------------------------------------------------------------------------------------------
