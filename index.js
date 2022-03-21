@@ -9,7 +9,7 @@ const ADD_DEPT = "ADD A DEPARTMENT";
 const ADD_ROLE = "ADD A ROLE";
 const ADD_EMP = "ADD AN EMPLOYEE";
 const EDIT_EMP_ROLE = "UPDATE AN EMPLOYEE ROLE";
-const { getAllDepartment, getAllRoles, getAllEmployees, insertDepartmentOrganic, insertRole, insertEmployee } = require('./utils/inquiry.js'); 
+const { getAllDepartment, getAllRoles, getAllEmployees, insertDepartmentOrganic, insertRole, insertEmployee, getAllEmployeesName } = require('./utils/inquiry.js'); 
 
 var options = [];
 options.push(VW_DEPT_ALL);
@@ -19,7 +19,7 @@ options.push(ADD_DEPT);
 options.push(ADD_ROLE);
 options.push(ADD_EMP);
 options.push(EDIT_EMP_ROLE);
-var mainAction = '';
+// var employeeFullNames = [];
 let deptHall = [];
 let roleBlock = [];
 let employeeHall = [];
@@ -207,11 +207,7 @@ const promptAddRole = () => {
          // profileData.teammembers.push(roleData);
          var role = new Role(roleData.title, roleData.salary, roleData.department);
          roleBlock.push(role); 
-         // console.log(deptHall[0]); // prints Department { name: 'Security' }
-         // console.log('dddddddddddddddddddddddddd');
-         // console.log(roleData.department);
-         // console.log('cccccccccccccccccccccccccc');
-         // console.log(roleData.confirmAddRole);
+        
          if (roleData.confirmAddRole) {
             // console.log('cccccccccccccccccccccccccc');
             // console.log(roleData.confirmAddRole);
@@ -222,8 +218,6 @@ const promptAddRole = () => {
             console.log(roleBlock[0].department);
             for (var i = 0; i < roleBlock.length; i++){
                console.log('I am in For Loop for ' + roleBlock[i].title);
-               // insertRole(roleBlock[i].title, roleBlock[i].salary,  roleBlock[i].department, i + 1);
-               // insertRole(roleBlock[i].title, roleBlock[i].salary, roleBlock[i].department, i + 1);
                insertRole(roleBlock[i], i + 1);
             }
             
@@ -248,9 +242,6 @@ const promptAddRole = () => {
 }
 
 const promptAddDepartment = () => { 
-   // // if (!profileData.teammembers) {
-   // //    profileData.teammembers = [];
-   // // }
    return  inquirer
      .prompt([
          {
@@ -330,6 +321,62 @@ function peekResult(){
    // console.log(employeeHall);  
 }
 
+const promptEditRolePerEmployee = ({ employeeFullNames }) => {
+   return  inquirer
+     .prompt([
+         {
+            type: 'list',
+            name: 'fullname',
+            message: "Which employee's role do you want to update? ",
+            choices: employeeFullNames
+         }
+         // ,
+         // {
+         //    type: 'confirm',
+         //    name: 'confirmPickAnotherEmployee', 
+         //    message: 'Would you like to add another department?',
+         //    default: false
+         // }
+      ])
+     .then(empData => {
+         var id = empData.fullname.split('-')[0]
+         console.log ('extracted id')
+         console.log (id)
+    
+         if (empData.confirmPickAnotherEmployee) {
+            // console.log('cccccccccccccccccccccccccc');
+            // console.log(empData.confirmPickAnotherEmployee);
+            return promptEditRolePerEmployee();
+         }
+         else {
+            for (var i = 0; i < deptHall.length; i++){
+               // console.log('I am in For Loop for ' + deptHall[i].name);
+               // insertDepartment(deptHall[i].name, i + 1);
+               insertDepartmentOrganic(deptHall[i].name, i + 1);
+            }
+            
+            inquirer
+            .prompt({
+               type: 'confirm',
+               name: 'confirmWantMenu', 
+               message: 'Would you like to go to the Main Menu? [No to End]',
+               default: false
+            })
+            .then(ansCont => {
+               if(ansCont.confirmWantMenu){
+                  return promtMainMenu(appName = false);
+               }
+               else{
+                  peekResult();
+                  console.log("Thank you for using Employee Tracker. Goodbye!");
+               }
+            })
+         }
+      });
+
+
+}
+
 const promtMainMenu = (appName) => {
    if (appName){
       console.log(`
@@ -386,76 +433,21 @@ const promtMainMenu = (appName) => {
             promptAddEmployee();
             break; 
          case EDIT_EMP_ROLE:
-            console.log("");
+            // promptEditEmployeeRole();
+            employeeFullNames = getAllEmployeesName();
+            // console.log('----------------');
+            // console.log(employeeFullNames);
+            // // promptEditRolePerEmployee(employeeFullNames);
             break;               
          default:
             promtMainMenu();   
       }
          
    });
+   
 };
 
 promtMainMenu(appName = true);
 
-// const promtMainMenu01 = () => {
-// //    console.log(`
-// //   .-------------------------------------------------------------------------.
-// //   |                     Welcome to Employee Tracking App                    |
-// //   '-------------------------------------------------------------------------'
-// //    `);
-//    
-//    return inquirer.prompt([
-//       {
-//          type: 'list',
-//          message: 'What would you like to do?',
-//          name: 'action',
-//          // choices: [VW_DEPT_ALL, VW_ROLE_ALL, VW_EMP_ALL, ADD_DEPT, ADD_ROLE, ADD_EMP, EDIT_EMP_ROLE]
-//          choices: options
-//       }
-//    ])
-//    .then(({ action }) => {
-//       console.log("Action in prompt: " + action);
-//       mainAction = action;
-//       return mainAction;
-//          
-//    });
-// };   
-
-// promtMainMenu01()
-//    .then(action => {
-//       // console.log("Action value: " + mainAction.action);
-//       // console.log("mainmenu value: " + mainAction.mainmenu);
-//       var picked = action; 
-//       switch (picked) {
-//          case VW_DEPT_ALL:
-//             getAllDepartment();
-//             inquirer
-//                .prompt({
-//                   type: 'confirm',
-//                   name: 'confirmMenu', 
-//                   message: 'Would you like to go back to the Main Menu?',
-//                   default: false
-//                })
-//                .then(({ confirmMenu }) => {
-//                   this.checkEndOfBattle();
-//                });
-//             break;
-//          case VW_ROLE_ALL:
-//             getAllRoles();
-//             break;
-//          default:
-//             promtMainMenu();   
-//       }
-//      
-//    })
-//    .catch(err => {
-//       // Prompt couldn't be rendered in the current environment
-//       if (err.isTtyError) 
-//       {
-//          console.log("Your console environment is not supported!")
-//       } else {
-//          console.log(err)
-//       }
-//    });
-
-
+ 
+ 

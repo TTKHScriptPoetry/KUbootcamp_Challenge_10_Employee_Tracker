@@ -47,6 +47,60 @@ function getAllRoles() {
 }
 
 //|||||||||||||||||||||||||||||||||||||||| INSERT / UPDATE ||||||||||||||||||||||||||||||||||||||||||||||
+function promptEditEmployeeRole(id, firstname, lastname){
+  const sqlUpdate = `UPDATE employee SET role_id = ? WHERE id = ?`;
+  const params = [id];
+  db.query(sqlUpdate, params, (err, result) => {
+     if(err){
+        console.log(err.message);
+        return;
+     }
+     else if (!result.affectedRows){
+      console.log('Employee not found');
+          
+     }
+     else {
+      console.log(result.affectedRows);
+     }
+  });
+}
+
+
+function getAllEmployeesName() {
+  var EmployeeList = []
+  const sqlSelect = `SELECT 
+                      CONCAT(e.id, ' - ', e.first_name, ' ', e.last_name) AS EmployeeFullName
+                      FROM employee e 
+                        LEFT JOIN employee mgr ON mgr.id = e.manager_id    
+                        JOIN role rl ON e.role_id = rl.id
+                        JOIN department d ON rl.department_id = d.id
+                      ORDER BY e.id;`
+  // -- Query Actions  
+  dbConn.promise().query(sqlSelect)
+    .then ( ([rows]) => {
+    const table = cTable.getTable(rows);
+    console.log("\n");
+    console.log(table);
+
+    // console.log (rows.length);
+    // console.log (rows[0].EmployeeFullName);
+    // console.log (rows[1].EmployeeFullName);
+    for (var i = 0 ; i < rows.length; i++)
+    {
+      EmployeeList.push(rows[i].EmployeeFullName)      
+    }
+    // console.log (EmployeeList);
+    return EmployeeList;
+  })
+  // console.log(EmployeeList);
+  return EmployeeList;
+   
+}
+
+
+
+
+
 // Ready to make a insert operation per department id
 function insertEmployeeOnTheFly(firstname, lastname, role_id, mgrId, element){
   const sqlInsertEmp = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?);`
@@ -250,36 +304,5 @@ function insertRole(targetRole, element){
 }
 
 
-
- // // const sqlInsertRole = `INSERT INTO role (title, salary, department_id) VALUES (?,?,?);`
-  // // const params = [title, salary, department];
-  // // dbConn.query(sqlInsertRole, params, (err, result) => {
-  // //   if (err) {
-  // //     console.log(err.message);
-  // //     return;
-  // //   }
-  // //   if (element % 2 == 0){
-  // //     console.log(`  >> Added ${title} to the database`); 
-  // //   }
-  // //   else{
-  // //     console.log(`\n  >> Added ${title} to the database`); 
-  // //   }
-  // // });
-
-// // function getAllRoles(){
-// //    const sqlSelectAll = `SELECT e.title as 'Job Title', e.id as 'Role Id', d.name as 'Department Name', e.salary as Salary  
-// //                         FROM role e LEFT JOIN department d ON d.id = department_id`
-// //                   
-// //    dbConn.query(sqlSelectAll, (err, rows) => {
-// //       if (err) {
-// //         console.log(err.message);
-// //         return;
-// //       }
-// //       console.log("\n");
-// //       const table = cTable.getTable(rows)
-// //       console.log(table);
-// //     });
-// // }
-
-module.exports = { getAllDepartment, getAllRoles, getAllEmployees, insertDepartmentOrganic, insertRole, insertEmployee };
+module.exports = { getAllDepartment, getAllRoles, getAllEmployees, insertDepartmentOrganic, insertRole, insertEmployee, getAllEmployeesName };
 
